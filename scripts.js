@@ -1,4 +1,4 @@
-function gameBoard() {
+const gameBoard = (() => {
     let board = [[Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell()]];
@@ -19,10 +19,11 @@ function gameBoard() {
             row.map((cell) => cell.getValue())
     );
     console.log(boardCellValues);
+    return boardCellValues;
     };
 
     return { placeMarker, printBoard, getBoard, };
-};
+})();
 
 function Cell() {
     let value = 0;
@@ -46,7 +47,8 @@ const gameController = (() => {
     
     const players = [];
     let activePlayer = players[0];
-    const board = gameBoard();
+    const board = gameBoard;
+    const playArea = gameBoard.getBoard();
 
     const addPlayerOne = (name) => {
         players.push(new Player(name, 1))
@@ -55,10 +57,6 @@ const gameController = (() => {
     const addPlayerTwo = (name) => {
         players.push(new Player(name, 2));
     };
-
-    const getPlayerList = () => {
-        console.log(players)
-    }
 
     
     const switchPlayer = () => {
@@ -69,14 +67,36 @@ const gameController = (() => {
 
     const getActivePlayer = () => activePlayer;
 
-    const playRound = (x, y) => {
-        console.log(
-            `placing ${getActivePlayer().name}'s marker`
-        );
-        console.log(getActivePlayer().marker)
+    const printNewRound = () => {
+        board.printBoard();
+        console.log(`${getActivePlayer().name}'s turn.`);
     }
 
 
+    const playRound = (x, y) => {
+ 
+        if (playArea[x][y].getValue() === 0) {
+            console.log(
+            `Placing ${getActivePlayer().name}'s marker`);
+            board.placeMarker(x,y, getActivePlayer().marker);
 
-    return {addPlayerOne, addPlayerTwo, getPlayerList, switchPlayer, getActivePlayer, playRound }
+            
+            if ((playArea[0][0].getValue() && playArea[0][1].getValue() && playArea[0][2].getValue() === getActivePlayer().marker) || 
+                (playArea[1][0].getValue() && playArea[1][1].getValue() && playArea[1][2].getValue() === getActivePlayer().marker) ||
+                (playArea[2][0].getValue() && playArea[2][1].getValue() && playArea[2][2].getValue() === getActivePlayer().marker) ||
+                (playArea[0][0].getValue() && playArea[1][1].getValue() && playArea[2][2].getValue() === getActivePlayer().marker) ||
+                (playArea[2][0].getValue() && playArea[1][1].getValue() && playArea[0][2].getValue() === getActivePlayer().marker)) {
+                console.log("WIN")
+                printNewRound();
+            } else {
+
+            /*switchPlayer();*/
+            printNewRound()};
+        } else {} {console.log("space not free");};
+
+    };
+
+
+
+    return {addPlayerOne, addPlayerTwo, getActivePlayer, playRound,}
 })();
