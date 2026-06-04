@@ -15,7 +15,6 @@ const gameBoard = (() => {
     }}
 
     const getGameActive = () => {
-        console.log("Get game active: " + gameActive);
         return gameActive;
     }
     const setGameActive = (state) => {
@@ -48,20 +47,21 @@ function Cell(x, y) {
     const xLoc = x;
     const yLoc = y;
     const cellDiv = document.createElement("div");
-    const textBox = document.createElement("p");
+    const icon = document.createElement("img");
 
     const container = document.querySelector('#play-area')
 
     const addMarker = (player) => {
         value = player;
+        icon.classList.add("icon");
         switch(player) {
             case 1: cellDiv.classList.add("x");
-                    textBox.classList.add("x");
-                    textBox.textContent = "X"
+                    icon.classList.add("x");
+                    icon.src="./icons/close.svg"
                 break;
             case 2: cellDiv.classList.add("o");
-                    textBox.classList.add("o");
-                    textBox.textContent = "O"
+                    icon.classList.add("o");
+                    icon.src="./icons/circle-outline.svg"
                 break;
         }
         ;
@@ -76,7 +76,7 @@ function Cell(x, y) {
     const generateDiv = () => {
         cellDiv.classList.add("marker-spot");
         container.appendChild(cellDiv);  
-        cellDiv.appendChild(textBox);      
+        cellDiv.appendChild(icon);      
         cellDiv.addEventListener("click", clickDiv);
 
         
@@ -124,7 +124,7 @@ const gameController = (() => {
 
     const printNewRound = () => {
         board.printBoard();
-        console.log(`${getActivePlayer().name}'s turn.`);
+        /*console.log(`${getActivePlayer().name}'s turn.`);*/
     }
 
 
@@ -132,8 +132,8 @@ const gameController = (() => {
         if (board.getGameActive() === true) {
         if (playArea[x][y].getValue() === 0) {
             roundsPlayed++
-            console.log(
-            `Placing ${getActivePlayer().name}'s marker`);
+            /*console.log(
+            `Placing ${getActivePlayer().name}'s marker`);*/
             board.placeMarker(x,y, getActivePlayer().marker);
             if (checkWin(x, y, getActivePlayer().marker)) {
                 console.log("WIN");
@@ -143,7 +143,6 @@ const gameController = (() => {
             } else
             switchPlayer();
             printNewRound();
-            console.log("rounds played:", roundsPlayed);
             }
         }}
 

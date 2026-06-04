@@ -25,22 +25,25 @@
     align-items: center;
 }
 
-p {
+.icon {
+    margin: 0 auto;
     align-self: center;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: pink;
-    border: solid 1px;
-    width: 90%;
-    height: 90%;
-    font-size: 100%;
-    color: white;
+    width: 100%;
+
 }
 
 .x {
-    background-color: red;
+    background-color: rgb(173, 56, 56);
 }
 
 .o {
-    background-color: blue;
+    background-color: rgb(56, 87, 173);
+}
+
+.icon.o {
+    width: 85%;
+}
+
+svg {
+    color: white;
 }
