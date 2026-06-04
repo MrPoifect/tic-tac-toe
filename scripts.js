@@ -5,7 +5,8 @@ const gameBoard = (() => {
     const playAreaDiv = document.querySelector('#play-area')
 
     const generateBoard = () => {
-    board = [];
+    board.length = 0
+    playAreaDiv.innerHTML = "";
     for (let i = 0; i < boardSize; i++) {
         board[i] = [];
 
@@ -104,6 +105,9 @@ const gameController = (() => {
     const board = gameBoard;
     const playArea = gameBoard.getBoard();
     let roundsPlayed = 0;
+    let p1Score = 0;
+    let p2Score = 0;
+    let tieScore = 0;
 
     const addPlayerOne = (name) => {
         players.push(new Player(name, 1))
@@ -136,10 +140,9 @@ const gameController = (() => {
             `Placing ${getActivePlayer().name}'s marker`);*/
             board.placeMarker(x,y, getActivePlayer().marker);
             if (checkWin(x, y, getActivePlayer().marker)) {
-                console.log("WIN");
-                gameBoard.printBoard();
+                gameOver(true);
             } else if (roundsPlayed >= 9){
-                console.log("Tie");
+                gameOver(false);
             } else
             switchPlayer();
             printNewRound();
@@ -175,17 +178,47 @@ const gameController = (() => {
     const resetGame = () => {
         activePlayer = players[0];
         gameBoard.generateBoard();
+        gameBoard.setGameActive(true);
         console.log("resetgame");
+        document.getElementById("game-over-modal").close();
     }
     
     const startGame = () => {
+        updateScores();
         gameBoard.setGameActive(true);
         console.log("start game")
     }
 
+    const gameOver = (isWon) => {
+        roundsPlayed = 0;
+        const winnerText = document.getElementById("winner");
+        if (isWon === true){
+            winnerText.textContent = `${getActivePlayer().name} wins!`
+            switch(getActivePlayer().marker) {
+                case 1: p1Score++;
+                    break;
+                case 2: p2Score++;
+                    break;
+            }
+
+        } else {
+            winnerText.textContent = "It's a tie!"
+            tieScore++;
+        }
+        updateScores();
+        document.getElementById("game-over-modal").showModal();
+    }
+
+    const updateScores = () => {
+        document.getElementById("p1-score").textContent = p1Score
+        document.getElementById("p2-score").textContent = p2Score;
+        document.getElementById("tie-score").textContent = tieScore;
+        console.log("Update scores")
+
+    }
 
 
-    return {addPlayerOne, addPlayerTwo, getActivePlayer, playRound, resetGame, startGame, }
+    return {addPlayerOne, addPlayerTwo, getActivePlayer, playRound, resetGame, startGame,}
 })();
 
 function pressMarker(x, y) {
@@ -194,25 +227,36 @@ function pressMarker(x, y) {
 
 
 
-const form = document.getElementById("move");
+const form = document.getElementById("players");
 
 
-form.addEventListener("submit", tempPlayMove);
+form.addEventListener("submit", beginGame);
 
-form.addEventListener("p1", gameController.addPlayerOne("Player1"));
-form.addEventListener("p2", gameController.addPlayerTwo("Player2"));
-
-function tempPlayMove (e) {
+function beginGame (e) {
     e.preventDefault();
+    let playerOneName = "Player One"
+    let playerTwoName = "Player Two"
 
-    const x = document.getElementById("move").elements['x'].value;
-    const y = document.getElementById("move").elements['y'].value;
-    gameController.playRound(x,y);
+    if (document.getElementById("players").elements['p1'].value != "") {
+        playerOneName = document.getElementById("players").elements['p1'].value;  
+    }
+    if (document.getElementById("players").elements['p2'].value != "") {
+        playerTwoName = document.getElementById("players").elements['p2'].value;
+    }
+
+    document.getElementById("p1-name").textContent = (playerOneName + ":");
+    document.getElementById("p2-name").textContent = (playerTwoName + ":");
+
+    gameController.addPlayerOne(playerOneName);
+    gameController.addPlayerTwo(playerTwoName);
+    gameController.startGame;
+    document.getElementById("players").innerHTML = "";
+    document.getElementById("scores").style.display = 'flex';
+
+    gameController.startGame();
+
 }
 
-const startbtn = document.getElementById("start");
-
-startbtn.addEventListener("click", gameController.startGame);
 
 const resetbtn = document.getElementById("restart");
 

@@ -8,18 +8,45 @@
     <script src="scripts.js" defer></script>
 </head>
 <body>
-    <button id="p1">Player1</button>
-    <button id="p2">Player2</button>
-<form id="move">
-    <label for="x">x</label>
-    <input type="text" id="x" name="x"><br>
-    <label for="y">y</label>
-    <input type="text" id="y" name="y"><br>
-    <button class="btn" type="submit">submit move</button>
+    <div class="header">
+        <h1>tic tac toe.</h1>
+    </div>
+    <div id="container">
+    <div id="play-area">
+    </div>
+    </div>
+    <div id="scores">
+        <div id="p1-score-container" class="score-container">
+            <p id="p1-name"></p>
+            <p id="p1-score"></p>
+        </div>
+        <div id="p1-score-container" class="score-container">
+            <p>Ties:</p>
+            <p id="tie-score"></p>
+        </div>
+        <div id="p2-score-container" class="score-container">
+            <p id="p2-name"></p>
+            <p id="p2-score"></p>
+        </div>
+    </div>
+    <form id="players">
+
+        <input type="text" id="p1" class="playerinput" name="p1" placeholder="Player One"/>
+        <input type="text" id="p2" class="playerinput" name="p2" placeholder="Player Two"/>
+        <button class="btn" type="submit" id="begin-btn">Begin Game</button>
     </form>
-    <button id="start">Start</button>
-    <button id="restart">Restart</button>
-<div id="play-area">
-</div>
+
+    <dialog id="game-over-modal">
+    <div id="game-results">
+        <p id="winner"></p>
+
+    </div>
+    
+    <button id="restart" command="close">Rematch</button>
+
+    </dialog>
+
+
+
 </body>
 </html>

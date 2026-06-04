@@ -4,25 +4,36 @@
     margin: 0;
 }
 
+#container {
+    display: grid;
+    align-self: center;
+    width: 100vw;
+    grid-template-columns: 1fr;
+    background-color: green;
+}
+
 #play-area {
-    width: 400px;
-    height: 400px;
-    background-color: rgb(114, 114, 114);
+    width: min(400px, 90%);
+    aspect-ratio: 1 / 1;
+    background-color: rgb(165, 164, 164);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 4px;
-    padding: 4px;
+    padding: 6px;
+    border-radius: 8px;
+    margin: 0 auto;
 }
 
 .marker-spot {
     margin: 0;
     padding: 0;
-    background-color: rgb(197, 197, 197);
+    background-color: rgb(219, 219, 219);
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
     align-items: center;
+    border-radius: 8px;
 }
 
 .icon {
@@ -44,6 +55,16 @@
     width: 85%;
 }
 
-svg {
-    color: white;
+#scores {
+    display: none;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0px 12px;
+
+}
+
+.score-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
