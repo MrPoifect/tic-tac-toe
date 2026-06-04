@@ -9,7 +9,6 @@
     align-self: center;
     width: 100vw;
     grid-template-columns: 1fr;
-    background-color: green;
 }
 
 #play-area {
