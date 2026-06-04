@@ -1,24 +1,33 @@
 const gameBoard = (() => {
     const boardSize = 3
+    let board = [];
+    let gameActive = false;
+    const playAreaDiv = document.querySelector('#play-area')
 
-    const board = [];
-
+    const generateBoard = () => {
+    board = [];
     for (let i = 0; i < boardSize; i++) {
         board[i] = [];
+
         for (let j = 0; j < boardSize; j++) {
-            board[i].push(Cell());
+            board[i].push(Cell(i, j));
         }
+    }}
+
+    const getGameActive = () => {
+        console.log("Get game active: " + gameActive);
+        return gameActive;
+    }
+    const setGameActive = (state) => {
+    gameActive = state;
     }
 
-    
-    
     const getBoard = () => board;
 
     const placeMarker = (x, y, player) => {
         if (board[x][y].getValue() === 0) {
-            console.log("Space is free")
             board[x][y].addMarker(player);
-        } else {console.log("space not free");}
+        }
     };
 
     const printBoard = () => {
@@ -29,17 +38,55 @@ const gameBoard = (() => {
     return boardCellValues;
     };
 
-    return { placeMarker, printBoard, getBoard, };
+    generateBoard();
+
+    return { placeMarker, printBoard, getBoard, generateBoard, getGameActive, setGameActive, };
 })();
 
-function Cell() {
+function Cell(x, y) {
     let value = 0;
+    const xLoc = x;
+    const yLoc = y;
+    const cellDiv = document.createElement("div");
+    const textBox = document.createElement("p");
+
+    const container = document.querySelector('#play-area')
 
     const addMarker = (player) => {
         value = player;
+        switch(player) {
+            case 1: cellDiv.classList.add("x");
+                    textBox.classList.add("x");
+                    textBox.textContent = "X"
+                break;
+            case 2: cellDiv.classList.add("o");
+                    textBox.classList.add("o");
+                    textBox.textContent = "O"
+                break;
+        }
+        ;
     };
 
     const getValue = () => value;
+
+    const clickDiv = () => {
+        pressMarker(xLoc, yLoc);
+    }
+
+    const generateDiv = () => {
+        cellDiv.classList.add("marker-spot");
+        container.appendChild(cellDiv);  
+        cellDiv.appendChild(textBox);      
+        cellDiv.addEventListener("click", clickDiv);
+
+        
+    }
+
+    generateDiv();
+
+
+
+    
 
     return { addMarker, getValue, };
 }
@@ -82,7 +129,7 @@ const gameController = (() => {
 
 
     const playRound = (x, y) => {
- 
+        if (board.getGameActive() === true) {
         if (playArea[x][y].getValue() === 0) {
             roundsPlayed++
             console.log(
@@ -98,9 +145,7 @@ const gameController = (() => {
             printNewRound();
             console.log("rounds played:", roundsPlayed);
             }
-
-
-        }
+        }}
 
     const checkWin = (x,y, player) => {
         let rowCheck = 0
@@ -128,10 +173,25 @@ const gameController = (() => {
         }
     }
 
+    const resetGame = () => {
+        activePlayer = players[0];
+        gameBoard.generateBoard();
+        console.log("resetgame");
+    }
+    
+    const startGame = () => {
+        gameBoard.setGameActive(true);
+        console.log("start game")
+    }
 
 
-    return {addPlayerOne, addPlayerTwo, getActivePlayer, playRound,}
+
+    return {addPlayerOne, addPlayerTwo, getActivePlayer, playRound, resetGame, startGame, }
 })();
+
+function pressMarker(x, y) {
+    gameController.playRound(x, y);
+}
 
 
 
@@ -150,3 +210,11 @@ function tempPlayMove (e) {
     const y = document.getElementById("move").elements['y'].value;
     gameController.playRound(x,y);
 }
+
+const startbtn = document.getElementById("start");
+
+startbtn.addEventListener("click", gameController.startGame);
+
+const resetbtn = document.getElementById("restart");
+
+resetbtn.addEventListener("click", gameController.resetGame);
