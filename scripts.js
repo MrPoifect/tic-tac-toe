@@ -225,7 +225,13 @@ function pressMarker(x, y) {
     gameController.playRound(x, y);
 }
 
+function preLoadIcon(url) {
+    const img = new Image();
+    img.src = url;
+}
 
+preLoadIcon("./icons/close.svg");
+preLoadIcon("./icons/circle-outline.svg");
 
 const form = document.getElementById("players");
 
