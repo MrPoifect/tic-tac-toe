@@ -30,14 +30,6 @@ const gameBoard = (() => {
         }
     };
 
-    const printBoard = () => {
-        const boardCellValues = board.map((row) =>
-            row.map((cell) => cell.getValue())
-    );
-    console.log(boardCellValues);
-    return boardCellValues;
-    };
-
     generateBoard();
 
     return { placeMarker, printBoard, getBoard, generateBoard, getGameActive, setGameActive, };
@@ -116,17 +108,10 @@ const gameController = (() => {
 
     const getActivePlayer = () => activePlayer;
 
-    const printNewRound = () => {
-        board.printBoard();
-        /*console.log(`${getActivePlayer().name}'s turn.`);*/
-    }
-
     const playRound = (x, y) => {
         if (board.getGameActive() === true) {
         if (playArea[x][y].getValue() === 0) {
             roundsPlayed++
-            /*console.log(
-            `Placing ${getActivePlayer().name}'s marker`);*/
             board.placeMarker(x,y, getActivePlayer().marker);
             if (checkWin(x, y, getActivePlayer().marker)) {
                 gameOver(true);
@@ -168,14 +153,12 @@ const gameController = (() => {
         activePlayer = players[0];
         gameBoard.generateBoard();
         gameBoard.setGameActive(true);
-        console.log("resetgame");
         document.getElementById("game-over-modal").close();
     }
     
     const startGame = () => {
         updateScores();
         gameBoard.setGameActive(true);
-        console.log("start game")
     }
 
     const gameOver = (isWon) => {
@@ -205,8 +188,6 @@ const gameController = (() => {
         document.getElementById("p1-score").textContent = p1Score
         document.getElementById("p2-score").textContent = p2Score;
         document.getElementById("tie-score").textContent = tieScore;
-        console.log("Update scores")
-
     }
 
 
