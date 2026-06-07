@@ -18,31 +18,36 @@
     <div id="scores">
         <div id="p1-score-container" class="score-container">
             <p id="p1-name"></p>
-            <p id="p1-score"></p>
+            <p id="p1-score" class="score"></p>
         </div>
         <div id="p1-score-container" class="score-container">
             <p>Ties:</p>
-            <p id="tie-score"></p>
+            <p id="tie-score" class="score"></p>
         </div>
         <div id="p2-score-container" class="score-container">
             <p id="p2-name"></p>
-            <p id="p2-score"></p>
+            <p id="p2-score" class="score"></p>
         </div>
     </div>
     <form id="players">
-
+        <div id="player-inputs">
         <input type="text" id="p1" class="playerinput" name="p1" placeholder="Player One"/>
         <input type="text" id="p2" class="playerinput" name="p2" placeholder="Player Two"/>
+        </div>
         <button class="btn" type="submit" id="begin-btn">Begin Game</button>
     </form>
 
+
     <dialog id="game-over-modal">
     <div id="game-results">
-        <p id="winner"></p>
-
+        <p id="winner">Player One Wins!</p>
+        
     </div>
-    
-    <button id="restart" command="close">Rematch</button>
+        <div id="winner-marker" class="o">
+        <img id="winner-icon" src="./icons/close.svg" alt="">
+        </div>
+        
+    <button id="restart" class="btn" command="close">Rematch</button>
 
     </dialog>
 

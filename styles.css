@@ -4,11 +4,26 @@
     margin: 0;
 }
 
+body {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.header {
+    margin: 0;
+    width: min(400px, 90%);
+    margin: 10px auto;
+    transform: translateX(-6px);
+    color: rgb(92, 92, 92);
+
+}
+
 #container {
     display: grid;
     align-self: center;
     width: 100vw;
     grid-template-columns: 1fr;
+
 }
 
 #play-area {
@@ -59,7 +74,9 @@
     display: none;
     flex-direction: row;
     justify-content: space-between;
-    padding: 0px 12px;
+    width: min(400px, 90%);
+    margin: 20px auto;
+    color: rgb(80, 80, 80)
 
 }
 
@@ -67,4 +84,114 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    gap: 15px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#players {
+    display: flex;
+    flex-direction: column;
+}
+
+#player-inputs {
+    display: flex;
+    flex-direction: row;
+    margin: 40px auto 10px;
+    gap: 25px;
+}
+
+.playerinput {
+    font-size: 20px;
+    max-width: 150px;
+    padding: 5px 5px;
+    border-radius: 6px;
+    border: solid 2px rgb(189, 189, 189);
+
+}
+
+
+#p2.playerinput:focus {
+    outline: none;
+    border-color: rgb(86, 111, 180);
+}
+
+#p1.playerinput:focus{
+    outline: none;
+    border-color: rgb(192, 91, 91);
+}
+
+#p1-score {
+    color: rgb(173, 56, 56);
+}
+
+#scores {
+    margin-top: 35px;
+}
+
+#p2-score {
+    color: rgb(56, 87, 173);
+}
+
+#tie-score {
+    color: rgb(151, 114, 180);
+}
+
+.score {
+    font-size: 60px
+}
+
+.btn {
+    margin: 35px auto 0px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: rgb(151, 114, 180);
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#game-over-modal {
+    margin: 200px auto;
+    width: min(325px, 75%);
+    border: rgb(121, 121, 121) 4px solid;
+    border-radius: 8px;
+    height: 350px;
+
+}
+
+#game-results {
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    margin: 25px;
+    color: rgb(121, 121, 121);
+}
+
+#winner-marker {
+    width: 150px;
+    height: 150px;
+    display: block;
+    margin: auto;
+    background-color: grey;
+    background-color: rgb(219, 219, 219);
+    border-radius: 8px;
+}
+
+#restart {
+    display: block;
+}
+
+#winner-marker.x {
+    background-color: rgb(173, 56, 56);
+}
+
+#winner-marker.o {
+    background-color: rgb(56, 87, 173);    
+}
+
+#winner-marker.T {
+    background-color: rgb(151, 114, 180); 
 }

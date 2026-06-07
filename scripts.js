@@ -1,11 +1,11 @@
 const gameBoard = (() => {
-    const boardSize = 3
+    const boardSize = 3;
     let board = [];
     let gameActive = false;
     const playAreaDiv = document.querySelector('#play-area')
 
     const generateBoard = () => {
-    board.length = 0
+    board.length = 0;
     playAreaDiv.innerHTML = "";
     for (let i = 0; i < boardSize; i++) {
         board[i] = [];
@@ -45,8 +45,6 @@ const gameBoard = (() => {
 
 function Cell(x, y) {
     let value = 0;
-    const xLoc = x;
-    const yLoc = y;
     const cellDiv = document.createElement("div");
     const icon = document.createElement("img");
 
@@ -71,7 +69,7 @@ function Cell(x, y) {
     const getValue = () => value;
 
     const clickDiv = () => {
-        pressMarker(xLoc, yLoc);
+        gameController.playRound(x, y);
     }
 
     const generateDiv = () => {
@@ -79,15 +77,9 @@ function Cell(x, y) {
         container.appendChild(cellDiv);  
         cellDiv.appendChild(icon);      
         cellDiv.addEventListener("click", clickDiv);
-
-        
     }
 
     generateDiv();
-
-
-
-    
 
     return { addMarker, getValue, };
 }
@@ -99,7 +91,6 @@ function Player(name, marker) {
 }
 
 const gameController = (() => {
-    
     const players = [];
     let activePlayer = players[0];
     const board = gameBoard;
@@ -117,7 +108,6 @@ const gameController = (() => {
         players.push(new Player(name, 2));
     };
 
-    
     const switchPlayer = () => {
         if (activePlayer === players[0]) {
             activePlayer = players[1]
@@ -130,7 +120,6 @@ const gameController = (() => {
         board.printBoard();
         /*console.log(`${getActivePlayer().name}'s turn.`);*/
     }
-
 
     const playRound = (x, y) => {
         if (board.getGameActive() === true) {
@@ -162,7 +151,7 @@ const gameController = (() => {
             }
         }
         if ((rowCheck === playArea.length) || (columnCheck === playArea.length)) {
-            console.log("Row or column win");
+            switchModalIcon(true);
             return true;
             
         }
@@ -170,7 +159,7 @@ const gameController = (() => {
         && playArea[2][2].getValue() === player) ||
         (playArea[0][2].getValue() === player && playArea[1][1].getValue() === player
         && playArea[2][0].getValue() === player)) {
-            console.log("Diag win");
+            switchModalIcon(true);
             return true;
         }
     }
@@ -196,13 +185,16 @@ const gameController = (() => {
             winnerText.textContent = `${getActivePlayer().name} wins!`
             switch(getActivePlayer().marker) {
                 case 1: p1Score++;
+                        switchModalIcon(isWon);
                     break;
                 case 2: p2Score++;
+                        switchModalIcon(isWon);
                     break;
             }
 
         } else {
             winnerText.textContent = "It's a tie!"
+            switchModalIcon(isWon);
             tieScore++;
         }
         updateScores();
@@ -218,24 +210,38 @@ const gameController = (() => {
     }
 
 
-    return {addPlayerOne, addPlayerTwo, getActivePlayer, playRound, resetGame, startGame,}
+    return {addPlayerOne, addPlayerTwo, getActivePlayer, playRound, resetGame, startGame, gameOver,}
 })();
 
-function pressMarker(x, y) {
-    gameController.playRound(x, y);
-}
 
+//Pre-load the X and O icons to prevent a delay when placing marker
 function preLoadIcon(url) {
     const img = new Image();
     img.src = url;
 }
-
 preLoadIcon("./icons/close.svg");
 preLoadIcon("./icons/circle-outline.svg");
 
+function switchModalIcon(gameWon) {
+    const marker = document.querySelector('#winner-marker');
+    const icon = document.querySelector('#winner-icon');
+    if (gameWon === true){
+        switch(gameController.getActivePlayer().marker) {
+            case 1: 
+                marker.className = "x";
+                icon.src = "./icons/close.svg";
+                break;
+            case 2:
+                marker.className = "o";
+                icon.src = "./icons/circle-outline.svg";
+                break;} 
+    } else {
+        marker.className = "T";
+        icon.src = "";
+    }
+}
+
 const form = document.getElementById("players");
-
-
 form.addEventListener("submit", beginGame);
 
 function beginGame (e) {
@@ -265,5 +271,4 @@ function beginGame (e) {
 
 
 const resetbtn = document.getElementById("restart");
-
 resetbtn.addEventListener("click", gameController.resetGame);
