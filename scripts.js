@@ -32,7 +32,7 @@ const gameBoard = (() => {
 
     generateBoard();
 
-    return { placeMarker, printBoard, getBoard, generateBoard, getGameActive, setGameActive, };
+    return { placeMarker, getBoard, generateBoard, getGameActive, setGameActive, };
 })();
 
 function Cell(x, y) {
