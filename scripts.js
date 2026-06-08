@@ -82,6 +82,7 @@ function Player(name, marker) {
     this.marker = marker;
 }
 
+
 const gameController = (() => {
     const players = [];
     let activePlayer = players[0];
@@ -195,13 +196,52 @@ const gameController = (() => {
 })();
 
 
-//Pre-load the X and O icons to prevent a delay when placing marker
+function beginGame (e) {
+    e.preventDefault();
+    let playerOneName = "Player One"
+    let playerTwoName = "Player Two"
+
+    const assignPlayerNames = () => {
+        const p1Name = document.getElementById("players").elements['p1'].value;
+        const p2Name = document.getElementById("players").elements['p2'].value
+        if (p1Name !== "") {
+            playerOneName = p1Name;
+        }
+        if (p2Name !== "") {
+            playerTwoName = p2Name;
+        }
+    }
+
+    const appendDuplicateName = () => {
+        if (playerTwoName == playerOneName) {
+            playerTwoName = (playerTwoName + "#2");
+        }
+    }
+
+    const runGameStart = () => {
+        document.getElementById("p1-name").textContent = (playerOneName + ":");
+        document.getElementById("p2-name").textContent = (playerTwoName + ":");
+
+        gameController.addPlayerOne(playerOneName);
+        gameController.addPlayerTwo(playerTwoName);
+        gameController.startGame;
+        document.getElementById("players").innerHTML = "";
+        document.getElementById("scores").style.display = 'flex';
+
+        gameController.startGame();
+    }
+
+    assignPlayerNames();
+    appendDuplicateName();
+    runGameStart();
+}
+
+
 function preLoadIcon(url) {
     const img = new Image();
     img.src = url;
 }
-preLoadIcon("./icons/close.svg");
-preLoadIcon("./icons/circle-outline.svg");
+
 
 function switchModalIcon(gameWon) {
     const marker = document.querySelector('#winner-marker');
@@ -222,34 +262,11 @@ function switchModalIcon(gameWon) {
     }
 }
 
+const resetbtn = document.getElementById("restart");
+resetbtn.addEventListener("click", gameController.resetGame);
+
 const form = document.getElementById("players");
 form.addEventListener("submit", beginGame);
 
-function beginGame (e) {
-    e.preventDefault();
-    let playerOneName = "Player One"
-    let playerTwoName = "Player Two"
-
-    if (document.getElementById("players").elements['p1'].value != "") {
-        playerOneName = document.getElementById("players").elements['p1'].value;  
-    }
-    if (document.getElementById("players").elements['p2'].value != "") {
-        playerTwoName = document.getElementById("players").elements['p2'].value;
-    }
-
-    document.getElementById("p1-name").textContent = (playerOneName + ":");
-    document.getElementById("p2-name").textContent = (playerTwoName + ":");
-
-    gameController.addPlayerOne(playerOneName);
-    gameController.addPlayerTwo(playerTwoName);
-    gameController.startGame;
-    document.getElementById("players").innerHTML = "";
-    document.getElementById("scores").style.display = 'flex';
-
-    gameController.startGame();
-
-}
-
-
-const resetbtn = document.getElementById("restart");
-resetbtn.addEventListener("click", gameController.resetGame);
+preLoadIcon("./icons/close.svg");
+preLoadIcon("./icons/circle-outline.svg");

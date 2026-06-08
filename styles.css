@@ -154,7 +154,8 @@ body {
 }
 
 #game-over-modal {
-    margin: 200px auto;
+    align-self: center;
+    margin: 0px auto;
     width: min(325px, 75%);
     border: rgb(121, 121, 121) 4px solid;
     border-radius: 8px;
